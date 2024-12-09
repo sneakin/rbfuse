@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Rubyfuse do
+describe RBFuse do
   it 'has a version number' do
-    expect(Rubyfuse::VERSION).not_to be nil
+    expect(RBFuse::VERSION).not_to be nil
   end
 end
