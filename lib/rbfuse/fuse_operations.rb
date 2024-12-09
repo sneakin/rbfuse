@@ -3,8 +3,8 @@ module RBFuse
     # https://github.com/libfuse/libfuse/blob/fuse_2_9_4/include/fuse.h#L88
     layout(
       :getattr, callback([:string, :pointer], :int),
-      :readlink, callback([:string, :string, :size_t], :int),
-      :getdir, callback([:string, :string, :uint], :int), # define types
+      :readlink, callback([:string, :pointer, :size_t], :int),
+      :getdir, callback([:string, :pointer, :pointer], :int), # unused
       :mknod, callback([:string, :mode_t, :dev_t], :int),
       :mkdir, callback([:string, :mode_t], :int),
       :unlink, callback([:string], :int),
@@ -24,22 +24,20 @@ module RBFuse
       :release, callback([:string, FuseFileInfo.ptr], :int),
       :fsync, callback([:string, :int, FuseFileInfo.ptr], :int),
       :setxattr, callback([:string, :string, :string, :size_t, :int], :int),
-      :getxattr, callback([:string, :string, :string, :size_t], :int),
-      :listxattr, callback([:string, :string, :size_t], :int),
+      :getxattr, callback([:string, :string, :pointer, :size_t], :int),
+      :listxattr, callback([:string, :pointer, :size_t], :int),
       :removexattr, callback([:string, :string], :int),
       :opendir, callback([:string, FuseFileInfo.ptr], :int),
-      :readdir, callback([:string, :pointer, :fuse_fill_dir_t, :off_t, FuseFileInfo.ptr], :int),
+      :readdir, callback([:string, :pointer, :fuse_fill_dir_t, :off_t, FuseFileInfo.ptr], :int), # todo flags
       :releasedir, callback([:string, FuseFileInfo.ptr], :int),
       :fsyncdir, callback([:string, :int, FuseFileInfo.ptr], :int),
       :init, callback([FuseConnInfo.ptr], :void),
       :destroy, callback([:pointer], :void),
       :access, callback([:string, :int], :int),
       :create, callback([:string, :mode_t, FuseFileInfo.ptr], :int),
-      :ftruncate, callback([:string, :off_t, FuseFileInfo.ptr], :int),
-      :fgetattr, callback([:string, Stat.ptr, FuseFileInfo.ptr], :int),
-      # :lock, callback([:string, FuseFileInfo.ptr, :int, Flock.ptr], :int),
+      :ftruncate, callback([:string, :off_t, FuseFileInfo.ptr], :int), # todo remove? not in fuse.h
+      :fgetattr, callback([:string, Stat.ptr, FuseFileInfo.ptr], :int), # todo remove?
       :lock, callback([:string, FuseFileInfo.ptr, :int, :pointer], :int),
-      # :utimens, callback([:string, Timespec.ptr], :int),
       :utimens, callback([:string, :pointer], :int),
       :bmap, callback([:string, :size_t, :uint64], :int),
 
@@ -54,7 +52,7 @@ module RBFuse
       :write_buf, callback([:string, FuseBufvec.ptr, :off_t, FuseFileInfo.ptr], :int),
       :read_buf, callback([:string, :pointer, :size_t, :off_t, FuseFileInfo.ptr], :int),
       :flock, callback([:string, FuseFileInfo.ptr, :int], :int),
-      :fallocate, callback([:string, :int, :off_t, :off_t, FuseFileInfo.ptr], :int)
+      :fallocate, callback([:string, :int, :off_t, :off_t, FuseFileInfo.ptr], :int),
     )
   end
 end
