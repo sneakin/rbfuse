@@ -12,3 +12,7 @@ mkmf.log
 
 *.swp
 *.gem
+*~
+*.bak
+*.#*
+DEADJOE
